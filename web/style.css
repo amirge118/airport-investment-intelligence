@@ -1,0 +1,323 @@
+/*
+ * style.css: design tokens, page shell, sidebar overview, top bar,
+ * airport explorer panel and the shared status "tone" colours.
+ * The conversation column and answer cards live in decision.css.
+ */
+
+/* ---- Tokens ------------------------------------------------------------ */
+:root {
+  --ink: #13232b;
+  --ink-2: #3c5056;
+  --muted: #56686c;   /* >= 4.5:1 on white and on --paper */
+  --faint: #637273;   /* lightest text colour that still meets 4.5:1 */
+  --line: #e2e7e4;
+  --line-strong: #d2dbd6;
+  --paper: #f5f7f4;
+  --surface: #ffffff;
+  --surface-2: #f3f6f3;
+
+  --navy: #0f222a;
+  --navy-2: #17313b;
+  --navy-line: #26424b;
+  --navy-text: #d5e4e2;
+  --navy-muted: #8aa5a7;
+
+  --accent: #1d6a53;
+  --accent-soft: #e7f3ec;
+  --amber: #8a5d17;
+  --amber-soft: #fbf0dc;
+  --red: #a2452f;
+  --red-soft: #f9e6e0;
+  --blue: #2c5a84;
+  --blue-soft: #e6eef7;
+  --focus: #2f7dd1;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --topbar-h: 84px;
+  --shadow: 0 8px 28px rgba(22, 52, 42, 0.07);
+
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+/* ---- Base and accessibility -------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; line-height: 1.45; }
+h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: wait; opacity: 0.6; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: 12px; top: -48px; z-index: 20;
+  background: var(--surface); color: var(--ink); padding: 10px 14px;
+  border-radius: var(--radius-sm); box-shadow: var(--shadow);
+}
+.skip-link:focus { top: 12px; }
+
+.eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--faint);
+}
+.pill {
+  display: inline-flex; align-items: center; white-space: nowrap;
+  border: 1px solid #d3e7dc; background: var(--accent-soft); color: var(--accent);
+  border-radius: 999px; padding: 6px 11px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+}
+
+/* Shared status tones: coverage badges, result-state pills, preview rows. */
+.tone-available { --tone-fg: var(--accent); --tone-bg: var(--accent-soft); }
+.tone-partial   { --tone-fg: var(--amber);  --tone-bg: var(--amber-soft); }
+.tone-missing   { --tone-fg: var(--red);    --tone-bg: var(--red-soft); }
+.tone-info      { --tone-fg: var(--blue);   --tone-bg: var(--blue-soft); }
+.tone-unknown   { --tone-fg: var(--muted);  --tone-bg: var(--surface-2); }
+
+/* ---- Page shell -------------------------------------------------------- */
+.shell { display: flex; min-height: 100vh; }
+.workspace { flex: 1; min-width: 0; height: 100vh; display: flex; flex-direction: column; }
+.content-grid {
+  flex: 1; min-height: 0;
+  display: grid; grid-template-columns: minmax(0, 1fr) 340px;
+}
+
+/* ---- Sidebar: product and data-coverage overview (informational) ------- */
+.sidebar {
+  width: 280px; flex: none;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 22px;
+  padding: 24px 18px 18px;
+  background: var(--navy); color: var(--navy-text);
+  scrollbar-color: var(--navy-line) transparent;
+}
+
+.sidebar-label { padding: 0 6px; font-size: 13px; font-weight: 700; color: #fff; }
+.sidebar-intro { padding: 6px 6px 0; font-size: 11.5px; line-height: 1.5; color: var(--navy-muted); }
+.overview-group {
+  margin: 18px 6px 6px; font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--navy-muted);
+}
+.overview-list li {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px;
+  padding: 7px 6px; border-top: 1px solid var(--navy-line);
+}
+.overview-list li:first-child { border-top: 0; }
+.overview-list strong { display: block; font-size: 12.5px; font-weight: 650; color: #f1f7f6; }
+.overview-list span:not(.coverage-badge) { display: block; margin-top: 1px; font-size: 11px; line-height: 1.35; color: var(--navy-muted); }
+
+.coverage-badge {
+  min-width: 30px; padding: 3px 8px; border-radius: 999px; white-space: nowrap; text-align: center;
+  font-size: 10.5px; font-weight: 700; font-variant-numeric: tabular-nums;
+  color: var(--navy-muted); background: var(--navy-2);
+}
+/* Dark-background variants of the shared tones. */
+.sidebar .tone-available { color: #9fdcc0; background: #173f37; }
+.sidebar .tone-partial   { color: #ecc98a; background: #3d3520; }
+.sidebar .tone-missing   { color: #eeb0a0; background: #43292a; }
+.sidebar .tone-unknown   { color: var(--navy-muted); background: var(--navy-2); }
+
+.sidebar-footer { margin-top: auto; padding: 16px 6px 0; border-top: 1px solid var(--navy-line); }
+.status-row { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; color: #f1f7f6; }
+.status-row + .status-caption { margin-bottom: 12px; }
+.status-dot { width: 7px; height: 7px; flex: none; border-radius: 50%; background: #8fd6b4; box-shadow: 0 0 0 3px #1f4740; }
+.status-caption { margin: 5px 0 0 15px; font-size: 11px; line-height: 1.45; color: var(--navy-muted); }
+
+/* ---- Top bar ----------------------------------------------------------- */
+.topbar {
+  min-height: var(--topbar-h); flex: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 32px; background: var(--surface); border-bottom: 1px solid var(--line);
+}
+.title-block { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.title-mark {
+  display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 12px;
+  background: var(--navy); color: #a9dcc6; font-size: 24px; line-height: 1;
+}
+.topbar h1 { font-size: 24px; font-weight: 750; line-height: 1.15; letter-spacing: -0.03em; color: var(--ink); }
+.title-sub { margin-top: 3px; font-size: 12px; color: var(--muted); }
+.top-actions { display: flex; align-items: center; gap: 12px; }
+.button-secondary {
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2);
+  border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 700;
+}
+.button-secondary:hover { background: var(--surface-2); }
+.text-link { color: var(--accent); font-size: 12px; font-weight: 700; text-decoration: none; }
+.text-link:hover { text-decoration: underline; }
+.explorer-link { display: none; }
+
+/* ---- Right panel: airport explorer and approach ------------------------ */
+.insights {
+  min-height: 0; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 28px;
+  padding: 24px 22px; background: #fafbf9; border-left: 1px solid var(--line);
+}
+.panel-heading { font-size: 13px; font-weight: 700; color: var(--ink); }
+.panel-intro { margin: 4px 0 12px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+
+.airport-search-wrap { position: relative; }
+.airport-search {
+  width: 100%; padding: 10px 12px; font-size: 13px;
+  border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface);
+}
+.airport-search:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px #d5ebdf; }
+.airport-results {
+  position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + 4px);
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px;
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.airport-results:empty { display: none; }
+.airport-results button {
+  display: grid; grid-template-columns: 44px 1fr; gap: 8px; width: 100%;
+  padding: 9px 11px; border: 0; border-bottom: 1px solid var(--line);
+  background: var(--surface); text-align: left; font-size: 12px;
+}
+.airport-results button:last-child { border-bottom: 0; }
+.airport-results button:hover, .airport-results button:focus-visible { background: var(--accent-soft); outline-offset: -2px; }
+.airport-results strong { color: var(--accent); }
+.airport-results span, .airport-results p { color: var(--muted); }
+.airport-results p { padding: 10px 12px; font-size: 12px; }
+
+.featured-airports { display: flex; gap: 6px; margin: 10px 0 12px; }
+.featured-airports button, .preview-actions button {
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--accent);
+  border-radius: var(--radius-sm); padding: 6px 10px; font-size: 11.5px; font-weight: 700;
+}
+.featured-airports button:hover, .preview-actions button:hover { background: var(--accent-soft); }
+
+.airport-preview {
+  min-height: 110px; padding: 14px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.airport-preview.is-empty, .airport-preview.is-loading { font-size: 12px; line-height: 1.5; color: var(--muted); }
+.airport-preview.is-empty strong { display: block; color: var(--ink); }
+.preview-title { display: flex; justify-content: space-between; gap: 10px; }
+.preview-title strong { display: block; font-size: 13.5px; }
+.preview-title small { display: block; margin-top: 2px; font-size: 11px; line-height: 1.4; color: var(--muted); }
+.preview-state {
+  align-self: flex-start; padding: 3px 7px; border-radius: 5px;
+  background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 800;
+}
+.traffic-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 12px 0; }
+.traffic-strip div { padding: 8px; border-radius: var(--radius-sm); background: var(--surface-2); }
+.traffic-strip small, .traffic-strip span { display: block; font-size: 10.5px; color: var(--muted); }
+.traffic-strip strong { display: block; margin: 2px 0; font-size: 15px; font-variant-numeric: tabular-nums; }
+.forecast-line {
+  display: flex; justify-content: space-between; gap: 8px;
+  padding-top: 10px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted);
+}
+.forecast-line strong { color: var(--accent); }
+.preview-missing { margin: 10px 0 0; font-size: 11.5px; line-height: 1.45; color: var(--amber); }
+.preview-capabilities { margin: 12px 0; border-top: 1px solid var(--line); }
+.preview-capabilities li {
+  display: flex; justify-content: space-between; gap: 8px;
+  padding: 6px 0; border-bottom: 1px solid var(--line);
+  font-size: 11.5px; text-transform: capitalize; color: var(--ink-2);
+}
+.preview-capabilities small { font-size: 10.5px; font-weight: 700; text-transform: none; }
+.preview-capabilities .is-available small { color: var(--accent); }
+.preview-capabilities .is-missing { color: var(--muted); }
+.preview-capabilities .is-missing small { color: var(--red); }
+.preview-actions-label { margin-bottom: 6px; font-size: 11px; font-weight: 700; color: var(--muted); }
+.preview-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Generic, customer-facing investment workflow. */
+.workflow { counter-reset: step; margin-top: 12px; }
+.workflow li {
+  counter-increment: step; position: relative;
+  padding: 0 0 16px 34px;
+}
+.workflow li::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--navy); color: #fff; font-size: 11px; font-weight: 700;
+}
+.workflow li:not(:last-child)::after {
+  content: ""; position: absolute; left: 10.5px; top: 26px; bottom: 4px;
+  width: 1px; background: var(--line-strong);
+}
+.workflow strong { display: block; font-size: 12.5px; }
+.workflow p { margin-top: 3px; font-size: 11.5px; line-height: 1.5; color: var(--muted); }
+.workflow-scope {
+  display: inline-block; margin-top: 6px; padding: 2px 7px; border-radius: 999px;
+  background: var(--surface-2); color: var(--ink-2); font-size: 10.5px; font-weight: 700;
+}
+
+.disclaimer {
+  display: flex; gap: 10px; padding: 12px; border-radius: 8px;
+  background: var(--amber-soft); border: 1px solid #f0dfc0;
+  font-size: 11.5px; line-height: 1.5; color: #7c5a26;
+}
+.disclaimer span { font-weight: 800; }
+
+/* ---- Responsive shell -------------------------------------------------- */
+/* Tablet / small laptop: explorer moves below the conversation. */
+@media (max-width: 1180px) {
+  .sidebar { width: 244px; }
+  .workspace { height: auto; }
+  .content-grid { grid-template-columns: minmax(0, 1fr); }
+  .insights {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;
+    overflow: visible; border-left: 0; border-top: 1px solid var(--line);
+  }
+  .disclaimer { grid-column: 1 / -1; }
+  .explorer-link { display: inline; }
+}
+
+/* Mobile: one column; the overview follows the conversation and explorer. */
+@media (max-width: 760px) {
+  :root { --topbar-h: 72px; }
+  .shell { flex-direction: column; }
+  .workspace { order: 1; }
+  .sidebar { order: 2; width: auto; height: auto; position: static; overflow: visible; }
+  .topbar { padding: 12px 16px; }
+  .topbar h1 { font-size: 17px; }
+  .title-mark { width: 34px; height: 34px; border-radius: 9px; font-size: 18px; }
+  .title-sub { display: none; }
+  .topbar .pill { display: none; }
+  .insights { grid-template-columns: minmax(0, 1fr); padding: 20px 16px; }
+}
+
+/* ---- Explorer preview: hero figure, trend bars, KPI grid ------------------ */
+.traffic-hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 14px 0 12px; }
+.hero-figure strong { display: block; font-size: 28px; font-weight: 750; letter-spacing: -0.03em; line-height: 1; }
+.hero-figure span { display: block; margin-top: 4px; font-size: 11.5px; color: var(--muted); }
+.hero-figure em { display: inline-block; margin-top: 7px; padding: 2px 8px; border-radius: 999px; font-style: normal; font-size: 11px; font-weight: 700; }
+.hero-figure em.is-up { background: var(--accent-soft); color: var(--accent); }
+.hero-figure em.is-down { background: var(--red-soft); color: var(--red); }
+.traffic-bars { display: flex; align-items: flex-end; gap: 4px; height: 84px; }
+.year-bar {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%;
+  padding: 2px 3px; border: 0; border-radius: 6px; background: none;
+}
+.year-bar:hover { background: var(--surface-2); }
+.bar-track { display: flex; align-items: flex-end; height: 52px; }
+.year-bar .bar { display: block; width: 22px; border-radius: 3px 3px 0 0; background: #c9e1d4; transition: background 0.15s; }
+.year-bar[aria-pressed="true"] .bar { background: var(--accent); }
+.bar-value { margin-bottom: 3px; font-size: 9.5px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.year-bar[aria-pressed="true"] .bar-value, .year-bar[aria-pressed="true"] .bar-year { color: var(--ink); }
+.bar-year { margin-top: 3px; font-size: 10px; color: var(--muted); }
+.hero-figure em[hidden] { display: none; }
+
+.preview-section { margin: 4px 0 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+.preview-section h4 { margin: 0 0 6px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.preview-section dl { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 10px; font-size: 12px; }
+.preview-section dt { color: var(--ink-2); }
+.preview-section dd { font-weight: 650; text-align: right; font-variant-numeric: tabular-nums; }
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.kpi { padding: 9px 10px; border-radius: 8px; background: var(--surface-2); }
+.kpi small { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.kpi strong { display: block; margin-top: 3px; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.kpi span { display: block; margin-top: 2px; font-size: 10.5px; line-height: 1.35; color: var(--muted); }
+
+.preview-gaps { margin: 4px 0 12px; font-size: 11.5px; line-height: 1.5; color: var(--muted); }
+.preview-gaps span:first-child { font-weight: 700; color: var(--red); }
+.preview-state { white-space: nowrap; }
+.kpi small, .kpi span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

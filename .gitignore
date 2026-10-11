@@ -1,0 +1,42 @@
+# Local secrets. Keep inert examples in the repository.
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# AI coding-agent configuration and private tool state.
+.claude/
+.codex/
+.agents/
+.cursor/
+.gemini/
+CLAUDE.md
+AGENTS.md
+.github/copilot-instructions.md
+
+# Python runtime artifacts.
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Local databases and SQLite journals.
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+
+# Presentation authoring scratch files. The final deck remains publishable.
+.chart-data-*/
+presentation/build/
+
+# Editor and operating-system files.
+.DS_Store
+.idea/
+*.swp
+*.swo

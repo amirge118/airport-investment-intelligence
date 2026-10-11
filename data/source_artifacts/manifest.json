@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "retrieved_at": "2026-10-11T13:22:42.461519+00:00",
+  "artifacts": {
+    "routes": {
+      "filename": "t100_segment_2025.zip",
+      "sha256": "5aa64ea5217896a68ddfec17d088b7cdfa1e19d5ff2ded9293770d3cef36e488",
+      "source_url": "https://www.transtats.bts.gov/DL_SelectFields.aspx?QO_fu146_anzr=Nv4+Pn44vr45&gnoyr_VQ=GDM",
+      "period": "2025"
+    },
+    "delays": {
+      "filename": "bts_delay_causes_2025.zip",
+      "sha256": "23cb12957e50be379ef4bc4a99971ee72976662ee48de3a427ebd3c196f235e6",
+      "source_url": "https://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp",
+      "period": "2025-01/2025-12"
+    },
+    "development": {
+      "filename": "npias_2025_2029.xlsx",
+      "sha256": "08a73f30376cd1ede7350c6d5bb81cac06305270c78914b7f39212984b590cd8",
+      "source_url": "https://www.faa.gov/airports/planning_capacity/npias/current",
+      "download_url": "https://www.faa.gov/sites/faa.gov/files/airports/planning_capacity/npias/current/ARP-NPIAS-2025-2029-AppendixA.xlsx",
+      "period": "2025-2029"
+    }
+  }
+}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Airport Investment Intelligence</title>
+<!-- style.css: tokens, page shell, sidebar, explorer. decision.css: conversation and answer cards. -->
+<link rel="stylesheet" href="/style.css" />
+<link rel="stylesheet" href="/decision.css" />
+</head>
+<body>
+<a class="skip-link" href="#composer-input">Skip to the question box</a>
+<div class="shell">
+
+  <!-- Product overview: what the screen can tell you about an airport. Informational only. -->
+  <aside class="sidebar" aria-labelledby="overview-title">
+    <section class="overview">
+      <h2 class="sidebar-label" id="overview-title">Data coverage</h2>
+      <p class="sidebar-intro" id="identity-count">US airport registry loading</p>
+
+      <h3 class="overview-group">Traffic &middot; 2023&ndash;25</h3>
+      <ul class="overview-list">
+        <li data-coverage="passenger_trend">
+          <div><strong>Passenger trend</strong><span>Volume and 2-yr growth</span></div>
+          <span class="coverage-badge">…</span>
+        </li>
+        <li data-coverage="absolute_change">
+          <div><strong>Passengers added</strong><span>Ranked by state or region</span></div>
+          <span class="coverage-badge">…</span>
+        </li>
+        <li data-coverage="seat_utilization">
+          <div><strong>Seat utilization</strong><span>Load factor</span></div>
+          <span class="coverage-badge">…</span>
+        </li>
+        <li data-coverage="screening_score">
+          <div><strong>Screening score</strong><span>Growth, scale, utilization</span></div>
+          <span class="coverage-badge">…</span>
+        </li>
+      </ul>
+
+      <h3 class="overview-group">Outlook &amp; operations</h3>
+      <ul class="overview-list">
+        <li data-coverage="faa_forecast">
+          <div><strong>FAA forecast</strong><span>Enplanements to FY2030</span></div>
+          <span class="coverage-badge">…</span>
+        </li>
+        <li data-coverage="congestion">
+          <div><strong>Delays</strong><span>Arrivals 15+ min late</span></div>
+          <span class="coverage-badge">…</span>
+        </li>
+        <li data-coverage="route_mix">
+          <div><strong>Long-haul share</strong><span>Departures by distance</span></div>
+          <span class="coverage-badge">…</span>
+        </li>
+        <li data-coverage="revenue">
+          <div><strong>Revenue context</strong><span>Revenue per passenger</span></div>
+          <span class="coverage-badge">…</span>
+        </li>
+      </ul>
+
+      <h3 class="overview-group">Every answer</h3>
+      <ul class="overview-list">
+        <li data-coverage="freshness">
+          <div><strong>Sources</strong><span>Links, periods, data version</span></div>
+          <span class="coverage-badge">…</span>
+        </li>
+        <li>
+          <div><strong>Uncertainty</strong><span>Assumptions and limits</span></div>
+          <span class="coverage-badge tone-available">✓</span>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="sidebar-footer">
+      <p class="status-row"><span class="status-dot" aria-hidden="true"></span>US airports only</p>
+      <p class="status-caption">Ambiguous places are clarified, never guessed.</p>
+      <p class="status-row" id="model-status"><span class="status-dot" aria-hidden="true"></span><span>Checking model status&hellip;</span></p>
+      <p class="status-caption" id="data-status">Loading data status&hellip;</p>
+    </footer>
+  </aside>
+
+  <div class="workspace">
+    <header class="topbar">
+      <div class="title-block">
+        <span class="title-mark" aria-hidden="true">&#9992;</span>
+        <div>
+          <h1>Airport Investment Intelligence</h1>
+          <p class="title-sub">US airport diligence screen &middot; Not investment advice</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <a class="text-link explorer-link" href="#explorer">Airport explorer</a>
+        <span class="pill">US-only &middot; public data</span>
+        <button type="button" class="button-secondary" id="clear-chat">New analysis</button>
+      </div>
+    </header>
+
+    <div class="content-grid">
+      <main class="conversation">
+        <div class="conversation-inner" id="conversation" role="log" aria-label="Analysis conversation">
+          <section class="welcome" aria-labelledby="welcome-title">
+            <p class="welcome-kicker"><span class="kicker-dot" aria-hidden="true"></span>US airport investment screen</p>
+            <h2 id="welcome-title">Spot airport demand<br><span class="accent-text">before it&rsquo;s priced in.</span></h2>
+            <p class="welcome-lead">Ask about any US airport, state or region &mdash; get a ranked, sourced answer in seconds.</p>
+            <ul class="welcome-points">
+              <li class="point-data">
+                <span class="point-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M8 15l3-4 3 2 5-6"/></svg></span>
+                <div><strong>Public data</strong><span>BTS &amp; FAA, every figure sourced</span></div>
+              </li>
+              <li class="point-math">
+                <span class="point-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 7h14M5 12h14M5 17h8"/></svg></span>
+                <div><strong>Computed, not generated</strong><span>Numbers from code, never the AI</span></div>
+              </li>
+              <li class="point-limits">
+                <span class="point-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7l8-4z"/></svg></span>
+                <div><strong>Honest limits</strong><span>Assumptions shown, no profit claims</span></div>
+              </li>
+            </ul>
+            <h3 class="welcome-label">Example questions</h3>
+            <div class="example-grid">
+              <button type="button" class="example-card tone-green" data-q="Which New England airports deserve a closer look for expansion?"><span class="example-tag">Rank a region</span><span class="example-q">Which New England airports deserve a closer look for expansion?</span><span class="example-arrow" aria-hidden="true">&rarr;</span></button>
+              <button type="button" class="example-card tone-green" data-q="In Texas, where did departing passenger volume grow most since 2023?"><span class="example-tag">Absolute growth</span><span class="example-q">In Texas, where did departing passenger volume grow most since 2023?</span><span class="example-arrow" aria-hidden="true">&rarr;</span></button>
+              <button type="button" class="example-card tone-blue" data-q="Compare PDX and SEA on delays and passenger growth."><span class="example-tag">Compare airports</span><span class="example-q">Compare PDX and SEA on delays and passenger growth.</span><span class="example-arrow" aria-hidden="true">&rarr;</span></button>
+              <button type="button" class="example-card tone-blue" data-q="What share of BDL departures go at least 2,500 miles?"><span class="example-tag">Long-haul share</span><span class="example-q">What share of BDL departures go at least 2,500 miles?</span><span class="example-arrow" aria-hidden="true">&rarr;</span></button>
+              <button type="button" class="example-card tone-amber" data-q="How much unserved demand is there at SFO, and why?"><span class="example-tag">Demand pressure</span><span class="example-q">How much unserved demand is there at SFO, and why?</span><span class="example-arrow" aria-hidden="true">&rarr;</span></button>
+              <button type="button" class="example-card tone-amber" data-q="Would a new terminal at BDL be profitable?"><span class="example-tag">Revenue boundary</span><span class="example-q">Would a new terminal at BDL be profitable?</span><span class="example-arrow" aria-hidden="true">&rarr;</span></button>
+            </div>
+          </section>
+        </div>
+
+        <div class="composer-wrap">
+          <div class="composer">
+            <label class="visually-hidden" for="composer-input">Ask a question about US airports</label>
+            <textarea id="composer-input" rows="2" placeholder="Ask about a US airport, city, state or region&hellip;"></textarea>
+            <div class="composer-actions">
+              <span class="composer-hint">Enter to send &middot; Shift+Enter for a new line</span>
+              <button type="button" class="mic-button" id="mic-button" aria-pressed="false" aria-label="Ask by voice" title="Ask by voice" hidden>
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a1 1 0 1 1 2 0 7 7 0 0 1-6 6.93V21h3a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2h3v-2.07A7 7 0 0 1 5 12a1 1 0 1 1 2 0 5 5 0 0 0 10 0Z"/></svg>
+              </button>
+              <button type="button" class="send-button" id="send-button">Ask<span aria-hidden="true">&#8594;</span></button>
+            </div>
+          </div>
+          <div class="composer-foot">
+            <span>Numbers are computed by the server; the language model never supplies a figure.</span>
+            <span id="turn-count">0 turns this session</span>
+          </div>
+        </div>
+      </main>
+
+      <aside class="insights" id="explorer" aria-label="Airport explorer and approach">
+        <section class="panel" aria-labelledby="explorer-title">
+          <h2 class="panel-heading" id="explorer-title">Airport explorer</h2>
+          <p class="panel-intro">Look up any US airport to see its installed data before you ask.</p>
+          <div class="airport-search-wrap">
+            <label class="visually-hidden" for="airport-search">Search US airports by code, city or name</label>
+            <input id="airport-search" class="airport-search" type="search" maxlength="100" autocomplete="off"
+                   placeholder="Search code, city or airport" aria-controls="airport-results" />
+            <div id="airport-results" class="airport-results" aria-live="polite"></div>
+          </div>
+          <div class="featured-airports" role="group" aria-label="Featured airports">
+            <button type="button" data-airport="SFO">SFO</button>
+            <button type="button" data-airport="BOS">BOS</button>
+            <button type="button" data-airport="ANC">ANC</button>
+          </div>
+          <div id="airport-preview" class="airport-preview is-empty" aria-live="polite">
+            <strong>Select an airport</strong>
+            <p>See traffic history, FAA outlook and which data families are installed.</p>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="approach-title">
+          <h2 class="panel-heading" id="approach-title">How we approach an investment question</h2>
+          <ol class="workflow">
+            <li>
+              <strong>Understand the market and the airport</strong>
+              <p>How much traffic the airport handles, how it has moved since 2023 and how it compares with airports of similar size.</p>
+              <span class="workflow-scope">Covered here</span>
+            </li>
+            <li>
+              <strong>Identify demand and capacity pressure</strong>
+              <p>Whether passengers are filling the seats on offer, what the FAA expects next and, where data is installed, whether delays point to congestion.</p>
+              <span class="workflow-scope">Partly covered</span>
+            </li>
+            <li>
+              <strong>Test whether a terminal is the right intervention</strong>
+              <p>Pressure can come from runways, airspace, airline economics or the terminal itself. A lead becomes a terminal case only once the binding constraint is confirmed.</p>
+              <span class="workflow-scope">Next diligence</span>
+            </li>
+            <li>
+              <strong>Communicate evidence and uncertainty</strong>
+              <p>Every answer shows its sources, periods, assumptions and the diligence still needed before capital is committed.</p>
+              <span class="workflow-scope">Every answer</span>
+            </li>
+          </ol>
+        </section>
+
+        <p class="disclaimer"><span aria-hidden="true">&#9888;</span>A lead screen, not proof of terminal congestion, NPV or profit.</p>
+      </aside>
+    </div>
+  </div>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>
